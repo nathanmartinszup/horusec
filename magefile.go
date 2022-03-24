@@ -18,11 +18,22 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"os"
+	"strings"
 
 	// mage:import
 	_ "github.com/ZupIT/horusec-devkit/pkg/utils/mageutils"
 	"github.com/magefile/mage/sh"
+
+	"github.com/google/go-github/v40/github"
+)
+
+// env vars
+const (
+	envRepositoryOrg  = "HORUSEC_REPOSITORY_ORG"
+	envRepositoryName = "HORUSEC_REPOSITORY_NAME"
 )
 
 // GetCurrentDate execute "echo", `::set-output name=date::$(date "+%a %b %d %H:%M:%S %Y")`
@@ -33,4 +44,42 @@ func GetCurrentDate() error {
 	}
 
 	return sh.RunV("echo", fmt.Sprintf("::set-output name=date::%s", date))
+}
+
+func GetReleaseInfo() error {
+	githubClient := github.NewClient(nil)
+
+	tags, resp, err := githubClient.Repositories.ListTags(
+		context.Background(),
+		os.Getenv(envRepositoryOrg),
+		os.Getenv(envRepositoryName),
+		&github.ListOptions{Page: 1, PerPage: 1},
+	)
+
+	if github.CheckResponse(resp.Response) != nil {
+		return err
+	}
+
+	printOutputs(*tags[0].Name)
+
+	return nil
+}
+
+func printOutputs(version string) {
+	fmt.Printf("::set-output name=lastLaunchedRelease::%s\n", version)
+	fmt.Printf("::set-output name=actualReleaseBranchName::%s\n", getReleaseBranch(version))
+}
+
+func getReleaseBranch(version string) string {
+	splittedVersion := strings.Split(removePrefixes(version), ".")
+	major := splittedVersion[0]
+	minor := splittedVersion[1]
+
+	return fmt.Sprintf("release/v%s.%s", major, minor)
+}
+
+// removePrefixes remove all the prefixes from the version, including -rc, -beta, v.
+func removePrefixes(version string) string {
+	return strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(version, "-rc", ""),
+		"-beta", ""), "v", "")
 }
