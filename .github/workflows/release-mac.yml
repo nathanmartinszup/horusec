@@ -13,8 +13,10 @@
 # limitations under the License.
 name: ReleaseMac
 on:
-  release:
-    types: [published]
+  workflow_run:
+    workflows: ["release-final"]
+    types:
+      - completed
   workflow_dispatch:
 
 permissions: read-all
