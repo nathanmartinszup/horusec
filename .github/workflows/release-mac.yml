@@ -55,6 +55,19 @@ jobs:
       - name: Install Mage
         run: go install github.com/magefile/mage@v1.11
 
+      - name: Teste github
+        run: |
+          version=$(curl -sL https://api.github.com/repos/nathanmartinszup/horusec/releases/latest | jq -r ".tag_name")
+          echo "Actual version: ${version}"
+          echo "::set-output name=actualVersion::${version}"
+
+      - name: Get release info
+        id: release-info
+        run: mage -v GetReleaseInfo
+        env:
+          HORUSEC_REPOSITORY_ORG: ${{ github.repository_owner }}
+          HORUSEC_REPOSITORY_NAME: ${{ github.event.repository.name }}
+
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
         with:
@@ -74,13 +87,6 @@ jobs:
 
       - name: Git config
         run: mage -v defaultGitConfig
-
-      - name: Get release info
-        id: release-info
-        run: mage -v GetReleaseInfo
-        env:
-          HORUSEC_REPOSITORY_ORG: ${{ github.repository_owner }}
-          HORUSEC_REPOSITORY_NAME: ${{ github.event.repository.name }}
 
       - name: Checkout release candidate branch
         run: mage -v checkoutReleaseBranch ${{ steps.release-info.actualReleaseBranchName }}
