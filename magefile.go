@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//go:build mage
-
 // This is horusec private mage functions, check https://github.com/ZupIT/horusec-devkit/tree/main/pkg/utils/mageutils for basics functions.
 package main
 
 import (
 	"context"
 	"fmt"
+	"golang.org/x/oauth2"
 	"os"
 	"strings"
 
@@ -32,8 +31,9 @@ import (
 
 // env vars
 const (
-	envRepositoryOrg  = "HORUSEC_REPOSITORY_ORG"
-	envRepositoryName = "HORUSEC_REPOSITORY_NAME"
+	envRepositoryOrg     = "HORUSEC_REPOSITORY_ORG"
+	envRepositoryName    = "HORUSEC_REPOSITORY_NAME"
+	engGithubAccessToken = "ACCESS_TOKEN"
 )
 
 // GetCurrentDate execute "echo", `::set-output name=date::$(date "+%a %b %d %H:%M:%S %Y")`
@@ -47,7 +47,13 @@ func GetCurrentDate() error {
 }
 
 func GetReleaseInfo() error {
-	githubClient := github.NewClient(nil)
+	ctx := context.Background()
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: os.Getenv(engGithubAccessToken)},
+	)
+	tc := oauth2.NewClient(ctx, ts)
+
+	githubClient := github.NewClient(tc)
 
 	tags, resp, err := githubClient.Repositories.ListTags(
 		context.Background(),
