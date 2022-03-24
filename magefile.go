@@ -33,9 +33,9 @@ import (
 
 // env vars
 const (
-	envRepositoryOrg     = "HORUSEC_REPOSITORY_ORG"
-	envRepositoryName    = "HORUSEC_REPOSITORY_NAME"
-	engGithubAccessToken = "ACCESS_TOKEN"
+	envRepositoryOrg  = "HORUSEC_REPOSITORY_ORG"
+	envRepositoryName = "HORUSEC_REPOSITORY_NAME"
+	envGithubToken    = "GITHUB_TOKEN"
 )
 
 // GetCurrentDate execute "echo", `::set-output name=date::$(date "+%a %b %d %H:%M:%S %Y")`
@@ -51,7 +51,7 @@ func GetCurrentDate() error {
 func GetReleaseInfo() error {
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: os.Getenv(engGithubAccessToken)},
+		&oauth2.Token{AccessToken: os.Getenv(envGithubToken)},
 	)
 	tc := oauth2.NewClient(ctx, ts)
 
