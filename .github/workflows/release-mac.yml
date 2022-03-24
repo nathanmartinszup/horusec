@@ -13,8 +13,10 @@
 # limitations under the License.
 name: ReleaseMac
 on:
-  release:
-    types: [published]
+  workflow_run:
+    workflows: ["release-final"]
+    types:
+      - completed
   workflow_dispatch:
 
 permissions: read-all
@@ -29,6 +31,9 @@ jobs:
       matrix:
         os:
           - macOS-latest
+    env:
+      COSIGN_KEY_LOCATION: /tmp/cosign.key
+      COSIGN_PWD: ${{ secrets.COSIGN_PWD }}
 
     steps:
       - name: Checkout
@@ -81,5 +86,3 @@ jobs:
           GORELEASER_CURRENT_TAG: "v0.0.0-alpha"
           CURRENT_DATE: ${{ steps.date.outputs.date }}
           CLI_VERSION: "v0.0.0-alpha"
-
-
