@@ -14,7 +14,7 @@
 name: ReleaseMac
 on:
   workflow_run:
-    workflows: ["release-final"]
+    workflows: ["release-final", "release-rc", "release-beta"]
     types:
       - completed
   workflow_dispatch:
