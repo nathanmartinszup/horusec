@@ -54,13 +54,6 @@ jobs:
       - name: Install Mage
         run: go install github.com/magefile/mage@v1.11
 
-      - name: Get current date
-        id: date
-        run: mage -v getCurrentDate
-
-      - name: Git config
-        run: mage -v defaultGitConfig
-
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
         with:
@@ -74,8 +67,24 @@ jobs:
         env:
           COSIGN_KEY: ${{secrets.COSIGN_KEY}}
 
+      - name: Get current date
+        id: date
+        run: mage -v getCurrentDate
+
+      - name: Git config
+        run: mage -v defaultGitConfig
+
+      - name: Get release info
+        id: release-info
+        run: mage -v GetReleaseInfo
+        env:
+          HORUSEC_REPOSITORY_ORG: ${{ github.repository_owner }}
+          HORUSEC_REPOSITORY_NAME: ${{ github.event.repository.name }}
+
+      - name: Checkout release candidate branch
+        run: mage -v checkoutReleaseBranch ${{ steps.release-info.actualReleaseBranchName }}
+
       - name: Run GoReleaser on MacOS
-        if: ${{ matrix.os == 'macos-latest' }}
         uses: goreleaser/goreleaser-action@v2
         with:
           distribution: goreleaser
@@ -83,6 +92,13 @@ jobs:
           args: release --rm-dist --skip-publish --skip-sign --release-notes="README.md" --config goreleaser-macos.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GORELEASER_CURRENT_TAG: "v0.0.0-alpha"
+          GORELEASER_CURRENT_TAG: ${{ steps.release-info.lastLaunchedRelease }}
           CURRENT_DATE: ${{ steps.date.outputs.date }}
-          CLI_VERSION: "v0.0.0-alpha"
+          CLI_VERSION: ${{ steps.release-info.lastLaunchedRelease }}
+
+      - name: Update Release Assets
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ./dist/horusec_darwin_arm64/horusec_mac_arm64
+            ./dist/horusec_darwin_amd64/horusec_mac_amd64
