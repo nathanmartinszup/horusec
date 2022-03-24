@@ -84,7 +84,7 @@ jobs:
         run: mage -v defaultGitConfig
 
       - name: Checkout release candidate branch
-        run: mage -v checkoutReleaseBranch ${{ steps.release-info.actualReleaseBranchName }}
+        run: mage -v checkoutReleaseBranch ${{ steps.release-info.outputs.actualReleaseBranchName }}
 
       - name: Run GoReleaser on MacOS
         uses: goreleaser/goreleaser-action@v2
@@ -94,9 +94,9 @@ jobs:
           args: release --rm-dist --skip-publish --skip-sign --release-notes="README.md" --config goreleaser-macos.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GORELEASER_CURRENT_TAG: ${{ steps.release-info.lastLaunchedRelease }}
+          GORELEASER_CURRENT_TAG: ${{ steps.release-info.outputs.lastLaunchedRelease }}
           CURRENT_DATE: ${{ steps.date.outputs.date }}
-          CLI_VERSION: ${{ steps.release-info.lastLaunchedRelease }}
+          CLI_VERSION: ${{ steps.release-info.outputs.lastLaunchedRelease }}
 
       - name: Update Release Assets
         uses: softprops/action-gh-release@v1
