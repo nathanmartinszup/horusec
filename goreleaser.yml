@@ -257,7 +257,7 @@ release:
     ## Docker images
     - `docker pull nathanmartins18/testrepository:{{ .Tag }}`
 
-    **Full Changelog**: https://github.com/ZupIT/horusec/compare/{{ .PreviousTag }}...{{ .Tag }}
+    **Full Changelog**: https://github.com/nathanmartinszup/horusec/compare/{{ .PreviousTag }}...{{ .Tag }}
   extra_files:
     - glob: deployments/cosign.pub
 nfpms:
