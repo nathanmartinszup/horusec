@@ -29,6 +29,9 @@ jobs:
       matrix:
         os:
           - macOS-latest
+    env:
+      COSIGN_KEY_LOCATION: /tmp/cosign.key
+      COSIGN_PWD: ${{ secrets.COSIGN_PWD }}
 
     steps:
       - name: Checkout
