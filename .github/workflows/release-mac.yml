@@ -1,0 +1,85 @@
+# Copyright 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+name: Release-Update
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions: read-all
+jobs:
+  Release-Update:
+    permissions:
+      contents: write
+      packages: write
+      issues:   write
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macOS-latest
+
+        - name: Checkout
+          uses: actions/checkout@v3
+          with:
+            fetch-depth: 0
+
+        - name: Set up Go
+          uses: actions/setup-go@v3
+          with:
+            go-version: 1.17
+
+        - name: Cosign Installer
+          uses: sigstore/cosign-installer@main
+          with:
+            cosign-release: 'v1.2.0'
+
+        - name: Install Mage
+          run: go install github.com/magefile/mage@v1.11
+
+        - name: Get current date
+          id: date
+          run: mage -v getCurrentDate
+
+        - name: Git config
+          run: mage -v defaultGitConfig
+
+        - name: Import GPG key
+          uses: crazy-max/ghaction-import-gpg@v4
+          with:
+            gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+            passphrase: ${{ secrets.GPG_PASSPHRASE }}
+            git_user_signingkey: true
+            git_commit_gpgsign: true
+
+        - name: Install cosign private key
+          run: mage -v writeCosignKeyToFile
+          env:
+            COSIGN_KEY: ${{secrets.COSIGN_KEY}}
+
+        - name: Run GoReleaser on MacOS
+          if: ${{ matrix.os == 'macos-latest' }}
+          uses: goreleaser/goreleaser-action@v2
+          with:
+            distribution: goreleaser
+            version: latest
+            args: release --rm-dist --skip-publish --skip-sign --release-notes="README.md" --config goreleaser-macos.yml
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GORELEASER_CURRENT_TAG: "v0.0.0-alpha"
+            CURRENT_DATE: ${{ steps.date.outputs.date }}
+            CLI_VERSION: "v0.0.0-alpha"
+
+
