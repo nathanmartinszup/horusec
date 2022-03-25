@@ -91,7 +91,7 @@ jobs:
         with:
           distribution: goreleaser
           version: latest
-          args: release --skip-publish --skip-sign --release-notes="README.md" --config goreleaser-macos.yml
+          args: release --skip-publish --release-notes="README.md" --config goreleaser-macos.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GORELEASER_CURRENT_TAG: ${{ steps.release-info.outputs.lastLaunchedRelease }}
@@ -101,6 +101,8 @@ jobs:
       - name: List dist
         run: |
           cd dist/
+          ls
+          cd horusec_darwin_amd64/
           ls
 
       - name: Update Release Assets

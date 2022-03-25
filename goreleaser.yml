@@ -299,57 +299,57 @@ docker_signs:
     args: [ "sign", "-key={{ .Env.COSIGN_KEY_LOCATION }}", "${artifact}" ]
     artifacts: all
     stdin: '{{ .Env.COSIGN_PWD }}'
-#dockers:
-#  - image_templates:
-#      - 'nathanmartins18/testrepository:{{ .Tag }}-amd64'
-#    skip_push: "false"
-#    goos: linux
-#    goarch: amd64
-#    dockerfile: ./deployments/Dockerfile-gorelease-amd64
-#    use: docker
-#    build_flag_templates:
-#      - "--pull"
-#      - "--label=org.opencontainers.image.created={{.Date}}"
-#      - "--label=org.opencontainers.image.title={{.ProjectName}}"
-#      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
-#      - "--label=org.opencontainers.image.version={{.Version}}"
-#      - "--platform=linux/amd64"
-#    push_flags:
-#      - --tls-verify=false
-#  - image_templates:
-#      - 'nathanmartins18/testrepository:{{ .Tag }}-arm64'
-#    skip_push: "false"
-#    goos: linux
-#    goarch: arm64
-#    dockerfile: ./deployments/Dockerfile-gorelease-arm64
-#    use: docker
-#    build_flag_templates:
-#      - "--pull"
-#      - "--label=org.opencontainers.image.created={{.Date}}"
-#      - "--label=org.opencontainers.image.title={{.ProjectName}}"
-#      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
-#      - "--label=org.opencontainers.image.version={{.Version}}"
-#      - "--platform=linux/arm64"
-#    push_flags:
-#      - --tls-verify=false
-#docker_manifests:
-#
-#  - name_template: 'nathanmartins18/testrepository:{{ .Tag }}'
-#    image_templates:
-#      - 'nathanmartins18/testrepository:{{ .Tag }}-amd64'
-#      - 'nathanmartins18/testrepository:{{ .Tag }}-arm64'
-#  - name_template: 'nathanmartins18/testrepository:latest'
-#    image_templates:
-#      - 'nathanmartins18/testrepository:{{ .Tag }}-amd64'
-#      - 'nathanmartins18/testrepository:{{ .Tag }}-arm64'
-#    skip_push: auto
-#  - name_template: 'nathanmartins18/testrepository:v{{ .Major }}'
-#    image_templates:
-#      - 'nathanmartins18/testrepository:{{ .Tag }}-amd64'
-#      - 'nathanmartins18/testrepository:{{ .Tag }}-arm64'
-#    skip_push: auto
-#  - name_template: 'nathanmartins18/testrepository:v{{ .Major }}.{{ .Minor }}'
-#    image_templates:
-#      - 'nathanmartins18/testrepository:{{ .Tag }}-amd64'
-#      - 'nathanmartins18/testrepository:{{ .Tag }}-arm64'
-#    skip_push: auto
+dockers:
+  - image_templates:
+      - 'nathanmartins18/testrepository:{{ .Tag }}-amd64'
+    skip_push: "false"
+    goos: linux
+    goarch: amd64
+    dockerfile: ./deployments/Dockerfile-gorelease-amd64
+    use: docker
+    build_flag_templates:
+      - "--pull"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--platform=linux/amd64"
+    push_flags:
+      - --tls-verify=false
+  - image_templates:
+      - 'nathanmartins18/testrepository:{{ .Tag }}-arm64'
+    skip_push: "false"
+    goos: linux
+    goarch: arm64
+    dockerfile: ./deployments/Dockerfile-gorelease-arm64
+    use: docker
+    build_flag_templates:
+      - "--pull"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--platform=linux/arm64"
+    push_flags:
+      - --tls-verify=false
+docker_manifests:
+
+  - name_template: 'nathanmartins18/testrepository:{{ .Tag }}'
+    image_templates:
+      - 'nathanmartins18/testrepository:{{ .Tag }}-amd64'
+      - 'nathanmartins18/testrepository:{{ .Tag }}-arm64'
+  - name_template: 'nathanmartins18/testrepository:latest'
+    image_templates:
+      - 'nathanmartins18/testrepository:{{ .Tag }}-amd64'
+      - 'nathanmartins18/testrepository:{{ .Tag }}-arm64'
+    skip_push: auto
+  - name_template: 'nathanmartins18/testrepository:v{{ .Major }}'
+    image_templates:
+      - 'nathanmartins18/testrepository:{{ .Tag }}-amd64'
+      - 'nathanmartins18/testrepository:{{ .Tag }}-arm64'
+    skip_push: auto
+  - name_template: 'nathanmartins18/testrepository:v{{ .Major }}.{{ .Minor }}'
+    image_templates:
+      - 'nathanmartins18/testrepository:{{ .Tag }}-amd64'
+      - 'nathanmartins18/testrepository:{{ .Tag }}-arm64'
+    skip_push: auto
