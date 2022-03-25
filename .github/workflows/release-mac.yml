@@ -98,11 +98,18 @@ jobs:
           CURRENT_DATE: ${{ steps.date.outputs.date }}
           CLI_VERSION: ${{ steps.release-info.outputs.lastLaunchedRelease }}
 
+      - name: Rename checksums
+        run: |
+          mv ./dist/checksums.txt ./dist/checksums-mac.txt
+          mv ./dist/checksums.txt.sig ./dist/checksums-mac.txt.sig
+
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.release-info.outputs.lastLaunchedRelease }}
           files: |
+            ./dist/checksums-mac.txt
+            ./dist/checksums-mac.txt.sig
             ./dist/horusec_darwin_amd64/horusec_mac_amd64
             ./dist/horusec_darwin_amd64/horusec_mac_amd64.sig
             ./dist/horusec-standalone_darwin_amd64/horusec_mac_amd64_stand_alone
