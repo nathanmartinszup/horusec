@@ -145,7 +145,7 @@ builds:
       - CGO_ENABLED=1
     binary: horusec_{{ replace (replace .Os "windows" "win") "darwin" "mac" }}_{{ replace .Arch "386" "x86" }}
 
-  - id: horusec-windows-x86
+  - id: horusec-windows-386
     main: ./cmd/app/main.go
     ldflags:
       - -X 'github.com/ZupIT/horusec/cmd/app/version.Version={{ .Env.CLI_VERSION }}'
@@ -161,7 +161,7 @@ builds:
       - CGO_ENABLED=1
     binary: horusec_{{ replace (replace .Os "windows" "win") "darwin" "mac" }}_{{ replace .Arch "386" "x86" }}
 
-  - id: horusec-standalone-windows-x86
+  - id: horusec-standalone-windows-386
     main: ./cmd/app/main.go
     ldflags:
       - -X 'github.com/ZupIT/horusec/cmd/app/version.Version={{ .Env.CLI_VERSION }}'
@@ -236,6 +236,7 @@ archives:
       windows: win
   - id: horusec-standalone
     builds:
+      - horusec-standalone-linux-amd64
       - horusec-standalone-linux-386
       - horusec-standalone-linux-arm64
       - horusec-standalone-windows-amd64
