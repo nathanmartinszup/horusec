@@ -11,6 +11,7 @@ require (
 	github.com/go-enry/go-enry/v2 v2.8.0
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/gocarina/gocsv v0.0.0-20220304222734-caabc5f00d30
+	github.com/google/go-github/v40 v40.0.0
 	github.com/google/uuid v1.3.0
 	github.com/iancoleman/strcase v0.2.0
 	github.com/magefile/mage v1.12.1
@@ -39,7 +40,6 @@ require (
 	github.com/go-enry/go-oniguruma v1.2.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/google/go-github/v40 v40.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
