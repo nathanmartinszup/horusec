@@ -101,6 +101,7 @@ jobs:
       - name: Update Release Assets
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ steps.release-info.outputs.lastLaunchedRelease }}
           files: |
             ./dist/horusec_darwin_arm64/horusec_mac_arm64
             ./dist/horusec_darwin_amd64/horusec_mac_amd64
