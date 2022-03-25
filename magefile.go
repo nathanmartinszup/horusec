@@ -20,6 +20,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"golang.org/x/oauth2"
 	"os"
 	"strings"
 
@@ -34,6 +35,7 @@ import (
 const (
 	envRepositoryOrg  = "HORUSEC_REPOSITORY_ORG"
 	envRepositoryName = "HORUSEC_REPOSITORY_NAME"
+	envGithubToken    = "GITHUB_TOKEN"
 )
 
 // GetCurrentDate execute "echo", `::set-output name=date::$(date "+%a %b %d %H:%M:%S %Y")`
@@ -47,7 +49,13 @@ func GetCurrentDate() error {
 }
 
 func GetReleaseInfo() error {
-	githubClient := github.NewClient(nil)
+	ctx := context.Background()
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: os.Getenv(envGithubToken)},
+	)
+	tc := oauth2.NewClient(ctx, ts)
+
+	githubClient := github.NewClient(tc)
 
 	tags, resp, err := githubClient.Repositories.ListTags(
 		context.Background(),
