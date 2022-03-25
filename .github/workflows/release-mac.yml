@@ -91,19 +91,12 @@ jobs:
         with:
           distribution: goreleaser
           version: latest
-          args: release --skip-publish --release-notes="README.md" --config goreleaser-macos.yml
+          args: build --config goreleaser-macos.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GORELEASER_CURRENT_TAG: ${{ steps.release-info.outputs.lastLaunchedRelease }}
           CURRENT_DATE: ${{ steps.date.outputs.date }}
           CLI_VERSION: ${{ steps.release-info.outputs.lastLaunchedRelease }}
-
-      - name: List dist
-        run: |
-          cd dist/
-          ls
-          cd horusec_darwin_amd64/
-          ls
 
       - name: Update Release Assets
         uses: softprops/action-gh-release@v1
