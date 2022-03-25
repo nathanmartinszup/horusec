@@ -84,12 +84,12 @@ jobs:
           push: true
           context: .
           file: ./deployments/Dockerfile
-          tags: horuszup/horusec-cli:alpha
+          tags: nathanmartins18/testrepository:alpha
           platforms: linux/amd64,linux/arm64
 
       - name: Sign image
         run: |
-          cosign sign -key $COSIGN_KEY_LOCATION horuszup/horusec-cli:alpha
+          cosign sign -key $COSIGN_KEY_LOCATION nathanmartins18/testrepository:alpha
         env:
           COSIGN_PASSWORD: ${{ secrets.COSIGN_PWD }}
 
@@ -133,7 +133,7 @@ jobs:
 
             ## Docker images
 
-            - `docker pull horuszup/horusec-cli:alpha`
+            - `docker pull nathanmartins18/testrepository:alpha`
           files: |
             ./dist/checksums.txt
             ./dist/checksums.txt.sig
