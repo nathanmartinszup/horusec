@@ -55,6 +55,14 @@ jobs:
       - name: Install Mage
         run: go install github.com/magefile/mage@v1.11
 
+      - name: Get release info
+        id: release-info
+        run: mage -v GetReleaseInfo
+        env:
+          HORUSEC_REPOSITORY_ORG: ${{ github.repository_owner }}
+          HORUSEC_REPOSITORY_NAME: ${{ github.event.repository.name }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
         with:
@@ -77,14 +85,6 @@ jobs:
 
       - name: Checkout release candidate branch
         run: mage -v checkoutReleaseBranch ${{ steps.release-info.outputs.actualReleaseBranchName }}
-
-      - name: Get release info
-        id: release-info
-        run: mage -v GetReleaseInfo
-        env:
-          HORUSEC_REPOSITORY_ORG: ${{ github.repository_owner }}
-          HORUSEC_REPOSITORY_NAME: ${{ github.event.repository.name }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run GoReleaser on MacOS
         uses: goreleaser/goreleaser-action@v2
