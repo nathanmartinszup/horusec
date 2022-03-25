@@ -100,7 +100,7 @@ jobs:
 
       - name: List dist
         run: |
-          cd dist
+          cd dist/
           ls
 
       - name: Update Release Assets
