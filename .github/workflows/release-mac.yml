@@ -105,9 +105,9 @@ jobs:
           files: |
             ./dist/horusec_darwin_amd64/horusec_mac_amd64
             ./dist/horusec_darwin_amd64/horusec_mac_amd64.sig
-            ./dist/horusec_mac_amd64_stand_alone/horusec_mac_amd64_stand_alone
-            ./dist/horusec_mac_amd64_stand_alone/horusec_mac_amd64_stand_alone.sig
+            ./dist/horusec-standalone_darwin_amd64/horusec_mac_amd64_stand_alone
+            ./dist/horusec-standalone_darwin_amd64/horusec_mac_amd64_stand_alone.sig
             ./dist/horusec_darwin_arm64/horusec_mac_arm64
             ./dist/horusec_darwin_arm64/horusec_mac_arm64.sig
-            ./dist/horusec_mac_arm64_stand_alone/horusec_mac_arm64_stand_alone
-            ./dist/horusec_mac_arm64_stand_alone/horusec_mac_arm64_stand_alone.sig
+            ./dist/horusec-standalone_darwin_arm64/horusec_mac_arm64_stand_alone
+            ./dist/horusec-standalone_darwin_arm64/horusec_mac_arm64_stand_alone.sig
