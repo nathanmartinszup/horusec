@@ -308,6 +308,8 @@ dockers:
     goarch: amd64
     dockerfile: ./deployments/Dockerfile-gorelease-amd64
     use: docker
+    ids:
+      - horusec-linux-amd64
     build_flag_templates:
       - "--pull"
       - "--label=org.opencontainers.image.created={{.Date}}"
@@ -324,6 +326,8 @@ dockers:
     goarch: arm64
     dockerfile: ./deployments/Dockerfile-gorelease-arm64
     use: docker
+    ids:
+      - horusec-linux-arm64
     build_flag_templates:
       - "--pull"
       - "--label=org.opencontainers.image.created={{.Date}}"
