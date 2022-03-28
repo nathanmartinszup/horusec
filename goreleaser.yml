@@ -334,7 +334,6 @@ dockers:
     push_flags:
       - --tls-verify=false
 docker_manifests:
-
   - name_template: 'nathanmartins18/testrepository:{{ .Tag }}'
     image_templates:
       - 'nathanmartins18/testrepository:{{ .Tag }}-amd64'
